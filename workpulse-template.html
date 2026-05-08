@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Work Pulse — Octaknight Labs</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
+<style>
+  :root {
+    --bg: #ffffff;
+    --bg2: #f5f5f5;
+    --bg3: #ececec;
+    --text: #111111;
+    --text2: #666666;
+    --text3: #999999;
+    --border: rgba(0,0,0,0.1);
+    --border2: rgba(0,0,0,0.2);
+    --warn-bg: #fff8e1;
+    --warn-text: #7a5c00;
+    --success-bg: #e8f5e9;
+    --success-text: #1b5e20;
+    --radius: 12px;
+    --radius-sm: 8px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1a1a1a;
+      --bg2: #242424;
+      --bg3: #2e2e2e;
+      --text: #f0f0f0;
+      --text2: #999999;
+      --text3: #666666;
+      --border: rgba(255,255,255,0.1);
+      --border2: rgba(255,255,255,0.2);
+      --warn-bg: #2a2000;
+      --warn-text: #f5c842;
+      --success-bg: #0a2a0f;
+      --success-text: #66bb6a;
+    }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    background: var(--bg3);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 2rem;
+  }
+  .container { max-width: 780px; margin: 0 auto; }
+
+  /* Header */
+  .hdr {
+    display: flex; align-items: center; justify-content: space-between;
+    background: var(--bg); border: 0.5px solid var(--border);
+    border-radius: var(--radius); padding: 1rem 1.5rem; margin-bottom: 1rem;
+  }
+  .brand { display: flex; align-items: center; gap: 12px; }
+  .mark {
+    width: 36px; height: 36px; border-radius: 9px; background: #378ADD;
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-size: 14px; font-weight: 600; letter-spacing: -0.5px;
+  }
+  .t1 { font-size: 16px; font-weight: 600; color: var(--text); }
+  .t2 { font-size: 11px; color: var(--text2); margin-top: 1px; }
+  .week-badge {
+    font-size: 12px; color: var(--text2);
+    display: flex; align-items: center; gap: 5px;
+  }
+
+  /* Tabs */
+  .tabs {
+    display: flex; gap: 0; background: var(--bg);
+    border: 0.5px solid var(--border); border-radius: var(--radius);
+    padding: 4px; margin-bottom: 1rem;
+  }
+  .tab {
+    flex: 1; padding: 8px 16px; font-size: 13px; border: none;
+    background: none; cursor: pointer; color: var(--text2);
+    border-radius: var(--radius-sm); font-family: inherit; transition: all .15s;
+  }
+  .tab.on { background: var(--bg3); color: var(--text); font-weight: 500; }
+
+  /* Cards */
+  .grid3 { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 12px; margin-bottom: 1rem; }
+  .card {
+    background: var(--bg); border: 0.5px solid var(--border);
+    border-radius: var(--radius); padding: 1rem; cursor: pointer; transition: border-color .15s;
+  }
+  .card:hover { border-color: var(--border2); }
+  .card.sel { border: 1.5px solid #378ADD; }
+  .av {
+    width: 30px; height: 30px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 600; margin-bottom: 8px;
+  }
+  .mn { font-size: 13px; font-weight: 600; color: var(--text); }
+  .mr { font-size: 11px; color: var(--text2); margin-bottom: 12px; }
+  .rw { position: relative; width: 100px; height: 100px; margin: 0 auto 4px; }
+  .rc { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); text-align: center; }
+  .rp { font-size: 17px; font-weight: 600; color: var(--text); }
+  .rl { font-size: 9px; color: var(--text2); }
+
+  /* Legend */
+  .leg { display: flex; flex-wrap: wrap; gap: 6px 16px; margin-bottom: 1rem; }
+  .li { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--text2); }
+  .dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+
+  /* Box */
+  .box {
+    background: var(--bg); border: 0.5px solid var(--border);
+    border-radius: var(--radius); padding: 1rem 1.25rem; margin-bottom: 1rem;
+  }
+  .bt { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
+  .bs { font-size: 11px; color: var(--text2); margin-bottom: 1rem; }
+
+  /* Bar rows */
+  .br { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .bl { font-size: 12px; color: var(--text2); width: 148px; flex-shrink: 0; }
+  .btr {
+    flex: 1; height: 6px; background: var(--bg3);
+    border-radius: 3px; position: relative; overflow: visible;
+  }
+  .bf { position: absolute; top: 0; left: 0; height: 100%; border-radius: 3px; }
+  .btgt { position: absolute; top: -5px; width: 2px; height: 16px; background: var(--text3); border-radius: 1px; }
+  .bv { font-size: 11px; color: var(--text2); width: 34px; text-align: right; flex-shrink: 0; }
+  .bd { font-size: 11px; font-weight: 600; width: 40px; text-align: right; flex-shrink: 0; }
+  .pos { color: #D85A30; }
+  .neg { color: #1D9E75; }
+  .zer { color: var(--text3); }
+
+  /* Insights */
+  .ins {
+    border-radius: var(--radius-sm); padding: 10px 12px;
+    margin-top: 1rem; font-size: 12px; display: flex; align-items: flex-start; gap: 8px;
+  }
+  .iw { background: var(--warn-bg); color: var(--warn-text); }
+  .ig { background: var(--success-bg); color: var(--success-text); }
+
+  /* Settings */
+  .srow {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 0; border-bottom: 0.5px solid var(--border);
+  }
+  .srow:last-child { border-bottom: none; }
+  .sname { font-size: 13px; color: var(--text); }
+  .sdesc { font-size: 11px; color: var(--text2); }
+  .stgt { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+  .stgt input {
+    width: 56px; font-size: 13px; font-family: inherit;
+    text-align: right; padding: 4px 8px;
+    border: 0.5px solid var(--border2); border-radius: var(--radius-sm);
+    background: var(--bg3); color: var(--text);
+  }
+  .stgt span { font-size: 12px; color: var(--text2); }
+  .hint { font-size: 12px; color: var(--text2); }
+  .empty { text-align: center; padding: 2.5rem 0; color: var(--text2); font-size: 13px; }
+  .empty i { font-size: 32px; display: block; margin-bottom: 10px; opacity: .4; }
+  .mgr-hint { font-size: 12px; color: var(--text2); margin-bottom: 12px; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="hdr">
+    <div class="brand">
+      <div class="mark">OK</div>
+      <div>
+        <div class="t1">Work Pulse</div>
+        <div class="t2">Octaknight Labs</div>
+      </div>
+    </div>
+    <div class="week-badge">
+      <i class="ti ti-calendar" style="font-size:15px"></i>
+      <span id="month-label">Month Year</span>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab on" onclick="sv(this,'company')">Company</button>
+    <button class="tab" onclick="sv(this,'gap')">Gap Analysis</button>
+    <button class="tab" onclick="sv(this,'settings')">Configure</button>
+  </div>
+
+  <div id="v-company">
+    <div class="mgr-hint">Activity rings show % of time per focus area — click a manager for their gap analysis</div>
+    <div class="grid3" id="g-company"></div>
+    <div class="leg" id="main-leg"></div>
+    <div class="box">
+      <div class="bt">Team allocation vs targets</div>
+      <div class="bs">Average across all managers — grey marker = company target</div>
+      <div id="agg-bars"></div>
+    </div>
+    <div id="company-gap-detail"></div>
+  </div>
+
+  <div id="v-gap" style="display:none">
+    <div class="mgr-hint">Select a manager to view their detailed allocation gap</div>
+    <div class="grid3" id="g-gap"></div>
+    <div id="gap-detail"></div>
+  </div>
+
+  <div id="v-settings" style="display:none">
+    <div class="hint" style="margin-bottom:1rem">Adjust company targets for each focus area. Changes update all charts instantly.</div>
+    <div class="box" id="settings-form"></div>
+    <div class="hint" style="margin-top:1rem">
+      <i class="ti ti-info-circle" style="font-size:13px;vertical-align:-2px;margin-right:3px"></i>
+      Targets currently sum to <strong id="settings-total"></strong>% — aim for 100%
+    </div>
+  </div>
+
+</div>
+
+<script>
+/* ============================================================
+   DATA BLOCK — replace this monthly using Copilot Prompt 2
+   ============================================================ */
+const MONTH = "May 2026";
+
+const A = [
+  { id:'product',  name:'Product & Engineering', color:'#378ADD', target:30 },
+  { id:'sales',    name:'Sales & Revenue',        color:'#1D9E75', target:25 },
+  { id:'ops',      name:'Operations',             color:'#EF9F27', target:20 },
+  { id:'people',   name:'People & Culture',       color:'#D85A30', target:15 },
+  { id:'strategy', name:'Strategy & Innovation',  color:'#7F77DD', target:10 }
+];
+
+const M = [
+  {
+    id:'sultan', name:'Sultan Khan Pathan', role:'Head of Product', initials:'SKP',
+    bg:'#E6F1FB', tc:'#0C447C',
+    allocations:{ product:45, sales:12, ops:18, people:15, strategy:10 },
+    topInsight:'Overindexing on product; sales attention below target'
+  },
+  {
+    id:'rohit', name:'Rohit Raghavan', role:'Head of Revenue', initials:'RR',
+    bg:'#E1F5EE', tc:'#085041',
+    allocations:{ product:10, sales:48, ops:15, people:17, strategy:10 },
+    topInsight:'Strong revenue focus; strategy allocation on target'
+  },
+  {
+    id:'devasish', name:'Devasish Gojagekar', role:'Head of Operations', initials:'DG',
+    bg:'#FAEEDA', tc:'#633806',
+    allocations:{ product:15, sales:10, ops:52, people:13, strategy:10 },
+    topInsight:'Heavy ops focus; people & culture slightly under target'
+  }
+];
+/* ============================================================
+   END DATA BLOCK
+   ============================================================ */
+
+
+// ---- State ----
+let cSel = null, gSel = null;
+
+// ---- Ring SVG ----
+function rings(al) {
+  const R = [43,34,25,16,7], SW = 6;
+  let s = '<svg viewBox="0 0 100 100" width="100" height="100">';
+  A.forEach((a,i) => {
+    const r = R[i], c = +(2*Math.PI*r).toFixed(1);
+    const pct = Math.min((al[a.id]||0)/100, 1);
+    const f = +(c*pct).toFixed(1);
+    s += `<circle cx="50" cy="50" r="${r}" stroke-width="${SW}" fill="none" stroke="rgba(128,128,128,0.15)"/>`;
+    if (pct > 0.01) {
+      s += `<circle cx="50" cy="50" r="${r}" stroke-width="${SW}" fill="none"
+        stroke="${a.color}" stroke-dasharray="${f} ${c}"
+        stroke-linecap="round" transform="rotate(-90 50 50)"/>`;
+    }
+  });
+  return s + '</svg>';
+}
+
+// ---- Manager card ----
+function mgrCard(m, sel, fn) {
+  const tot = Object.values(m.allocations).reduce((a,b)=>a+b,0);
+  return `<div class="card${sel?' sel':''}" onclick="${fn}('${m.id}')">
+    <div class="av" style="background:${m.bg};color:${m.tc}">${m.initials}</div>
+    <div class="mn">${m.name}</div>
+    <div class="mr">${m.role}</div>
+    <div class="rw">
+      ${rings(m.allocations)}
+      <div class="rc"><div class="rp">${tot}</div><div class="rl">% logged</div></div>
+    </div>
+  </div>`;
+}
+
+// ---- Average across managers ----
+function avgAlloc() {
+  const r = {};
+  A.forEach(a => { r[a.id] = Math.round(M.reduce((s,m)=>s+m.allocations[a.id],0)/M.length); });
+  return r;
+}
+
+// ---- Bar rows ----
+function barRows(al, showDelta) {
+  const max = 65;
+  return A.map(a => {
+    const act = al[a.id]||0, tgt = a.target, d = act - tgt;
+    const aw = Math.min(Math.round(act/max*100),100);
+    const tw = Math.min(Math.round(tgt/max*100),100);
+    const dc = d > 5 ? 'pos' : d < -5 ? 'neg' : 'zer';
+    const sign = d > 0 ? '+' : '';
+    return `<div class="br">
+      <div class="bl">${a.name}</div>
+      <div class="btr">
+        <div class="bf" style="width:${aw}%;background:${a.color}"></div>
+        <div class="btgt" style="left:${tw}%"></div>
+      </div>
+      <div class="bv">${act}%</div>
+      ${showDelta
+        ? `<div class="bd ${dc}">${sign}${d}</div>`
+        : `<div class="bd" style="color:var(--text3)">/${tgt}%</div>`}
+    </div>`;
+  }).join('');
+}
+
+// ---- Insight callouts ----
+function insightHtml(al) {
+  let html = '', maxO = {a:null,d:0}, maxU = {a:null,d:0};
+  A.forEach(a => {
+    const d = al[a.id] - a.target;
+    if (d > maxO.d) maxO = {a, d};
+    if (d < maxU.d) maxU = {a, d};
+  });
+  if (maxO.d > 5)
+    html += `<div class="ins iw"><i class="ti ti-alert-triangle" style="font-size:14px;flex-shrink:0"></i>
+      Overindexing on <strong>${maxO.a.name}</strong> by ${maxO.d}pp — consider redistributing</div>`;
+  if (maxU.d < -5)
+    html += `<div class="ins ig"><i class="ti ti-trending-up" style="font-size:14px;flex-shrink:0"></i>
+      <strong>${maxU.a.name}</strong> is ${Math.abs(maxU.d)}pp below target — attention needed</div>`;
+  return html;
+}
+
+// ---- Render: Company view ----
+function renderCompany() {
+  document.getElementById('g-company').innerHTML = M.map(m => mgrCard(m, cSel===m.id, 'cClick')).join('');
+  document.getElementById('main-leg').innerHTML = A.map(a =>
+    `<div class="li"><div class="dot" style="background:${a.color}"></div>${a.name}</div>`).join('');
+  document.getElementById('agg-bars').innerHTML = barRows(avgAlloc(), false);
+  const sel = M.find(m => m.id===cSel);
+  document.getElementById('company-gap-detail').innerHTML = sel
+    ? `<div class="box">
+        <div class="bt">Gap analysis — ${sel.name}</div>
+        <div class="bs">Actual vs company targets · Grey marker = target · Delta on right</div>
+        ${barRows(sel.allocations, true)}${insightHtml(sel.allocations)}
+       </div>`
+    : '';
+}
+function cClick(id) { cSel = cSel===id ? null : id; renderCompany(); }
+
+// ---- Render: Gap view ----
+function renderGap() {
+  document.getElementById('g-gap').innerHTML = M.map(m => mgrCard(m, gSel===m.id, 'gClick')).join('');
+  const sel = M.find(m => m.id===gSel);
+  document.getElementById('gap-detail').innerHTML = sel
+    ? `<div class="box">
+        <div class="bt">Gap analysis — ${sel.name}</div>
+        <div class="bs">Actual allocation vs company targets · Bar = actual · Marker = target</div>
+        ${barRows(sel.allocations, true)}${insightHtml(sel.allocations)}
+       </div>`
+    : `<div class="empty"><i class="ti ti-user-search"></i>Select a manager above to view their gap analysis</div>`;
+}
+function gClick(id) { gSel = gSel===id ? null : id; renderGap(); }
+
+// ---- Render: Settings ----
+function renderSettings() {
+  document.getElementById('settings-form').innerHTML = A.map(a =>
+    `<div class="srow">
+      <div class="dot" style="background:${a.color};width:10px;height:10px;flex-shrink:0"></div>
+      <div style="flex:1">
+        <div class="sname">${a.name}</div>
+        <div class="sdesc">Company target allocation</div>
+      </div>
+      <div class="stgt">
+        <input type="number" min="0" max="100" step="1" value="${a.target}"
+          onchange="updTgt('${a.id}',+this.value)">
+        <span>%</span>
+      </div>
+    </div>`).join('');
+  document.getElementById('settings-total').textContent = A.reduce((s,a)=>s+a.target,0);
+}
+
+function updTgt(id, val) {
+  const a = A.find(x => x.id===id);
+  if (!a) return;
+  a.target = Math.max(0, Math.min(100, isNaN(val) ? 0 : val));
+  document.getElementById('settings-total').textContent = A.reduce((s,a)=>s+a.target,0);
+  document.getElementById('agg-bars').innerHTML = barRows(avgAlloc(), false);
+  if (cSel) {
+    const sel = M.find(m=>m.id===cSel);
+    if (sel) document.getElementById('company-gap-detail').innerHTML =
+      `<div class="box"><div class="bt">Gap analysis — ${sel.name}</div>
+       <div class="bs">Actual vs company targets.</div>
+       ${barRows(sel.allocations,true)}${insightHtml(sel.allocations)}</div>`;
+  }
+  if (gSel) {
+    const sel = M.find(m=>m.id===gSel);
+    if (sel) document.getElementById('gap-detail').innerHTML =
+      `<div class="box"><div class="bt">Gap analysis — ${sel.name}</div>
+       <div class="bs">Actual vs target.</div>
+       ${barRows(sel.allocations,true)}${insightHtml(sel.allocations)}</div>`;
+  }
+}
+
+// ---- Tab switching ----
+function sv(btn, view) {
+  document.querySelectorAll('.tab').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  ['company','gap','settings'].forEach(v => {
+    document.getElementById('v-'+v).style.display = v===view ? '' : 'none';
+  });
+  if (view==='gap') renderGap();
+  if (view==='settings') renderSettings();
+}
+
+// ---- Init ----
+document.getElementById('month-label').textContent = MONTH;
+renderCompany();
+</script>
+</body>
+</html>
